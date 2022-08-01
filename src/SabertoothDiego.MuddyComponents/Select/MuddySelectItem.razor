@@ -1,0 +1,17 @@
+@namespace SabertoothDiego.MuddyComponents
+@typeparam T
+@inherits MudBaseSelectItem
+
+@if (HideContent == false)
+{
+	<MudListItem @attributes="UserAttributes" Value="@ItemId" id="@ItemId" OnClick="@OnClicked" OnClickHandlerPreventDefault="true" Icon="@CheckBoxIcon" Disabled="@Disabled" Class="@GetCssClasses()" Style="@Style">
+		@if (ChildContent != null)
+		{
+			@ChildContent
+		}
+		else
+		{
+			@DisplayString
+		}
+	</MudListItem>
+}

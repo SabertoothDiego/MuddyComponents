@@ -1,0 +1,57 @@
+﻿@using SabertoothDiego.MuddyComponents
+@namespace SabertoothDiego.Samples
+@page "/muddyselect"
+
+<PageTitle>MuddySelect - Example</PageTitle>
+
+<MuddySelect T="string" Label="Coffee" AnchorOrigin="Origin.BottomCenter">
+    <MuddySelectItem Value="@("Cappuccino")" />
+    <MuddySelectItem Value="@("Cafe Latte")" />
+    <MuddySelectItem Value="@("Espresso")" />
+</MuddySelect>
+
+<MuddySelect T="string" Label="Rooms" AnchorOrigin="Origin.BottomCenter">
+    <ChildContent>
+        <MuddySelectItem Value="@("Bedroom")" />
+        <MuddySelectItem Value="@("Kitchen")" />
+        <MuddySelectItem Value="@("Bathroom")" />
+    </ChildContent>
+    <PreListContent>
+        <MudText>These are the available rooms.</MudText>
+    </PreListContent>
+    <PostListContent>
+        <MudText>There might be more room, though.</MudText>
+    </PostListContent>
+</MuddySelect>
+
+<MuddySelect T="string" Label="Rooms" AnchorOrigin="Origin.BottomCenter" OnBeforeFocusLost="@FocusLost">
+    <ChildContent>
+        @foreach (var item in Food)
+        {
+            @if (!string.IsNullOrWhiteSpace(SearchText) && !item.Contains(SearchText)) continue;
+            <MuddySelectItem @key="item" Value="item" />
+        }
+    </ChildContent>
+    <PreListContent>
+        <MudTextField @onfocus="() => Focused = true" @onblur="() => Focused = false" Label="Search" Variant="Variant.Outlined" @bind-Value="SearchText" Immediate="true" AdornmentIcon="@Icons.Material.Filled.Search" Adornment="Adornment.Start" />
+    </PreListContent>
+</MuddySelect>
+
+
+@code {
+    private MudTextField<string> _searchField;
+    private IList<string> Food { get; } = new List<string>{
+        "Pudding",
+        "Chips",
+        "Soup",
+        "Cake",
+        "Bread"
+    };
+
+    private string? SearchText { get; set; }
+    private bool Focused { get; set; }
+
+    private bool FocusLost(bool e) {
+        return e && !Focused;
+    }
+}
